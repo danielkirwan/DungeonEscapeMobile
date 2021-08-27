@@ -6,8 +6,10 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private float _jumpForce = 5f;
+    [SerializeField] private float _speed;
     private bool _grounded = false;
     [SerializeField] private LayerMask _ground;
+    private bool _resetJump = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,24 +25,35 @@ public class Player : MonoBehaviour
     void PlayerMovement()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
+        _rb.velocity = new Vector2(horizontalInput * _speed, _rb.velocity.y);
 
-        if(Input.GetKeyDown(KeyCode.Space) && _grounded)
+        if(Input.GetKeyDown(KeyCode.Space) && Grounded())
         {
-            _grounded = false;
-            _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);   
-        }else if (!_grounded)
+            _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
+            StartCoroutine(ResetJumpRoutine());
+        }
+    }
+
+    bool Grounded()
+    {
+       RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, Vector2.down, 0.8f, _ground.value);
+        
+        if(hitInfo.collider != null)
         {
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(this.transform.position, Vector2.down, 0.8f, _ground.value);
-            Debug.DrawRay(transform.position, Vector2.down * 0.8f, Color.red);
-            if (raycastHit2D.collider != null)
+            if (!_resetJump)
             {
-                Debug.Log(raycastHit2D.collider.name);
-                _grounded = true;
+                return true;
             }
         }
-        
 
-        _rb.velocity = new Vector2(horizontalInput, _rb.velocity.y);
+        return false;
+    }
+
+    IEnumerator ResetJumpRoutine()
+    {
+        _resetJump = true;
+        yield return new WaitForSeconds(0.1f);
+        _resetJump = false;
     }
 
 }
