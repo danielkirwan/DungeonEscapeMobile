@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private bool _grounded = false;
     [SerializeField] private LayerMask _ground;
     private bool _resetJump = false;
+    [SerializeField] private Animator _anim;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,10 +25,12 @@ public class Player : MonoBehaviour
 
     void PlayerMovement()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float horizontalInput = Input.GetAxis("Horizontal");
         _rb.velocity = new Vector2(horizontalInput * _speed, _rb.velocity.y);
+        _anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
 
-        if(Input.GetKeyDown(KeyCode.Space) && Grounded())
+        Debug.DrawRay(transform.position, Vector2.down * 0.8f, Color.green);
+        if (Input.GetKeyDown(KeyCode.Space) && Grounded())
         {
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
             StartCoroutine(ResetJumpRoutine());
