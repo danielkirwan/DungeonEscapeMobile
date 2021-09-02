@@ -12,13 +12,13 @@ public class Player : MonoBehaviour
     private bool _resetJump = false;
     [SerializeField] private Animator _anim;
     [SerializeField] PlayerAnimation _playerAnimation;
-    private SpriteRenderer _sprite;
+    private SpriteRenderer _spritePlayer;
     private bool _jumping = false;
     // Start is called before the first frame update
     void Start()
     {
-        _sprite = GetComponentInChildren<SpriteRenderer>();
-        if(_sprite == null)
+        _spritePlayer = GetComponentInChildren<SpriteRenderer>();
+        if(_spritePlayer == null)
         {
             Debug.Log("Sprite is null");
         }
@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         PlayerMovement();
+        Attack();
     }
 
     void PlayerMovement()
@@ -48,15 +49,23 @@ public class Player : MonoBehaviour
         _playerAnimation.MovePlayer(horizontalInput);
     }
 
+    void Attack()
+    {
+        if(Input.GetMouseButtonDown(0) && Grounded())
+        {
+            _playerAnimation.Attack();
+        }
+    }
+
     void FlipPlayer(float horizontalInput)
     {
         if (horizontalInput > 0f)
         {
-            _sprite.flipX = false;
+            _spritePlayer.flipX = false;
         }
         else if (horizontalInput < 0f)
         {
-            _sprite.flipX = true;
+            _spritePlayer.flipX = true;
         }
     }
 
