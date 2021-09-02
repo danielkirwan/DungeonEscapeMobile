@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator _anim;
     [SerializeField] PlayerAnimation _playerAnimation;
     private SpriteRenderer _spritePlayer;
+    [SerializeField] private SpriteRenderer _spriteSword;
     private bool _jumping = false;
     // Start is called before the first frame update
     void Start()
@@ -62,10 +63,14 @@ public class Player : MonoBehaviour
         if (horizontalInput > 0f)
         {
             _spritePlayer.flipX = false;
+            _spriteSword.flipX = false;
+            _spriteSword.flipY = false;
         }
         else if (horizontalInput < 0f)
         {
             _spritePlayer.flipX = true;
+            _spriteSword.flipX = true;
+            _spriteSword.flipY = true;
         }
     }
 
