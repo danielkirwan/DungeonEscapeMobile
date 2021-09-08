@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Spider : Enemy
 {
-    public override void Update()
+    //Child object takes over the calling of Init by overriding
+    public override void Init()
     {
-        
+        base.Init();
     }
 }
