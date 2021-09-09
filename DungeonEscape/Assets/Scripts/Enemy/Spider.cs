@@ -2,11 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spider : Enemy
+public class Spider : Enemy, IDamageable
 {
-    //Child object takes over the calling of Init by overriding
+    public int Health { get; set; }
+
+    public void Damage()
+    {
+        Debug.Log("Damaged");
+        Health--;
+        if (Health < 1)
+        {
+            Destroy(this.gameObject);
+        }
+    }
     public override void Init()
     {
         base.Init();
+        Health = health;
     }
 }

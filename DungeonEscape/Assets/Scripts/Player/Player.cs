@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
         {
             if (!_resetJump)
             {
-                Debug.Log("Grounded");
+                //Debug.Log("Grounded");
                 _jumping = false;
                 _playerAnimation.JumpPlayer(_jumping);
                 return true;

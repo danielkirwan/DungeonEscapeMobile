@@ -13,6 +13,9 @@ public abstract class Enemy : MonoBehaviour
     protected Vector3 currentTarget;
     protected Animator anim;
     protected SpriteRenderer sprite;
+    protected bool ishit = false;
+
+    protected Player player;
 
     public virtual void Attack()
     {
@@ -28,6 +31,7 @@ public abstract class Enemy : MonoBehaviour
     {
         anim = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     public virtual void Movement()
@@ -52,12 +56,36 @@ public abstract class Enemy : MonoBehaviour
             anim.SetTrigger("idle");
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+        if (!ishit)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+        }
+
+        float distance = Vector3.Distance(transform.localPosition, player.transform.localPosition);
+        Debug.Log("Distance is : " + distance);
+        if (distance > 2f)
+        {
+            Debug.Log("Distance is : " + distance);
+            ishit = false;
+            anim.SetBool("inCombat", false);
+        }
+
+        Vector3 direction = player.transform.localPosition - transform.localPosition;
+        Debug.Log("Direction is : " + direction.x);
+
+        if(direction.x > 0 && anim.GetBool("inCombat")==true)
+        {
+            sprite.flipX = false;
+        }
+        else if(direction.x < 0 && anim.GetBool("inCombat") == true)
+        {
+            sprite.flipX = true;
+        }
 
     }
 
     public virtual void Update() {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && anim.GetBool("inCombat") == false)
         {
             return;
         }
