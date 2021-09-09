@@ -62,16 +62,16 @@ public abstract class Enemy : MonoBehaviour
         }
 
         float distance = Vector3.Distance(transform.localPosition, player.transform.localPosition);
-        Debug.Log("Distance is : " + distance);
+       // Debug.Log("Distance is : " + distance);
         if (distance > 2f)
         {
-            Debug.Log("Distance is : " + distance);
+            //Debug.Log("Distance is : " + distance);
             ishit = false;
             anim.SetBool("inCombat", false);
         }
 
         Vector3 direction = player.transform.localPosition - transform.localPosition;
-        Debug.Log("Direction is : " + direction.x);
+        //Debug.Log("Direction is : " + direction.x);
 
         if(direction.x > 0 && anim.GetBool("inCombat")==true)
         {

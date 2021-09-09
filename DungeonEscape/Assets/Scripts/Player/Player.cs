@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private float _speed;
+    [SerializeField] private int health = 5;
     private bool _grounded = false;
     [SerializeField] private LayerMask _ground;
     private bool _resetJump = false;
@@ -23,7 +24,11 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Sprite is null");
         }
+
+        Health = health;
     }
+
+    public int Health { get; set; }
 
     // Update is called once per frame
     void Update()
@@ -97,6 +102,13 @@ public class Player : MonoBehaviour
         _resetJump = true;
         yield return new WaitForSeconds(0.05f);
         _resetJump = false;
+    }
+
+
+    public void Damage()
+    {
+        Health--;
+        Debug.Log("Player health is: " + Health);
     }
 
 }
