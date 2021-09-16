@@ -92,4 +92,19 @@ public abstract class Enemy : MonoBehaviour
 
         Movement();
     }
+    
+    public virtual void TakeDamage(int newHealth)
+    {
+        health = newHealth;
+        anim.SetTrigger("hit");
+        ishit = true;
+        anim.SetBool("inCombat", true);
+
+        if (health < 1)
+        {
+            anim.SetTrigger("death");
+            Destroy(this.gameObject, 1.5f);
+        }
+    }
+
 }

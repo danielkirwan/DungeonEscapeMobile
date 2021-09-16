@@ -23,6 +23,5 @@ public class Attack : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         _canHit = true;
-        //Debug.Log("Can hit now");
     }
 }

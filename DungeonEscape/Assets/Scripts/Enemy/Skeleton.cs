@@ -9,16 +9,8 @@ public class Skeleton : Enemy, IDamageable
 
     public void Damage()
     {
-        Debug.Log("Damaged");
         Health--;
-        anim.SetTrigger("hit");
-        ishit = true;
-        anim.SetBool("inCombat", true);
-
-        if(Health < 1)
-        {
-            Destroy(this.gameObject);
-        }
+        TakeDamage(Health);
     }
     public override void Init()
     {

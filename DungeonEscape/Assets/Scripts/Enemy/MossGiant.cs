@@ -8,12 +8,8 @@ public class MossGiant : Enemy, IDamageable
 
     public void Damage()
     {
-        Debug.Log("Damaged");
         Health--;
-        if (Health < 1)
-        {
-            Destroy(this.gameObject);
-        }
+        TakeDamage(Health);
     }
     public override void Init()
     {
