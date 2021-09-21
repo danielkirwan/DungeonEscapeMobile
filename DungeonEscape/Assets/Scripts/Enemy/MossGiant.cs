@@ -14,6 +14,7 @@ public class MossGiant : Enemy, IDamageable
     public override void Init()
     {
         base.Init();
+        Debug.Log("moss giant gem value = " + gems);
         Health = health;
     }
 

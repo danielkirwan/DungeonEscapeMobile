@@ -16,6 +16,7 @@ public class Player : MonoBehaviour, IDamageable
     private SpriteRenderer _spritePlayer;
     [SerializeField] private SpriteRenderer _spriteSword;
     private bool _jumping = false;
+    public int _diamonds = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour, IDamageable
         }
 
         Health = health;
+        Debug.Log("Diamonds start " + _diamonds);
     }
 
     public int Health { get; set; }
@@ -109,6 +111,11 @@ public class Player : MonoBehaviour, IDamageable
     {
         Health--;
         Debug.Log("Player health is: " + Health);
+    }
+
+    public void UpdateDiamonds(int amount)
+    {
+        _diamonds = _diamonds + amount;
     }
 
 }

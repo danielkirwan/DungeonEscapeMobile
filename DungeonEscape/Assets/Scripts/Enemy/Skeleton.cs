@@ -15,6 +15,7 @@ public class Skeleton : Enemy, IDamageable
     public override void Init()
     {
         base.Init();
+        Debug.Log("skeleton gem value = " + gems);
         Health = health;
     }
 }

@@ -11,17 +11,24 @@ public class Spider : Enemy, IDamageable
 
     public void Damage()
     {
-        Debug.Log("Damaged");
+        if (isDead)
+        {
+            return;
+        }
         Health--;
         if (Health < 1)
         {
+            isDead = true;
             anim.SetTrigger("death");
+            Instantiate(_diamondPrefab, this.transform.position, Quaternion.identity);
+            _diamond.UpdateDiamondValue(base.gems);
             Destroy(this.gameObject, 1.5f);
         }
     }
     public override void Init()
     {
         base.Init();
+        Debug.Log("spider gem value = " + gems);
         Health = health;
     }
 

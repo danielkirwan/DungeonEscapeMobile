@@ -9,6 +9,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected int gems;
 
     [SerializeField] protected Transform pointA, pointB;
+    [SerializeField] protected GameObject _diamondPrefab;
+    protected Diamond _diamond;
 
     protected Vector3 currentTarget;
     protected Animator anim;
@@ -16,6 +18,7 @@ public abstract class Enemy : MonoBehaviour
     protected bool ishit = false;
 
     protected Player player;
+    protected bool isDead;
 
     public virtual void Attack()
     {
@@ -25,6 +28,12 @@ public abstract class Enemy : MonoBehaviour
     private void Start()
     {
         Init();
+        _diamond = _diamondPrefab.GetComponent<Diamond>();
+        if(_diamond == null)
+        {
+            Debug.Log("Diamond null");
+        }
+        
     }
 
     public virtual void Init()
@@ -95,6 +104,11 @@ public abstract class Enemy : MonoBehaviour
     
     public virtual void TakeDamage(int newHealth)
     {
+        if (isDead)
+        {
+            return;
+        }
+
         health = newHealth;
         anim.SetTrigger("hit");
         ishit = true;
@@ -102,9 +116,17 @@ public abstract class Enemy : MonoBehaviour
 
         if (health < 1)
         {
+            isDead = true;
             anim.SetTrigger("death");
+            CreateDiamond();
             Destroy(this.gameObject, 1.5f);
         }
+    }
+
+    public void CreateDiamond()
+    {
+        Instantiate(_diamondPrefab, this.transform.position, Quaternion.identity);
+        _diamond.UpdateDiamondValue(gems);
     }
 
 }
