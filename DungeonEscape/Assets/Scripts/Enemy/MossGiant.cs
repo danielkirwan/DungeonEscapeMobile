@@ -16,6 +16,7 @@ public class MossGiant : Enemy, IDamageable
         base.Init();
         Debug.Log("moss giant gem value = " + gems);
         Health = health;
+        gems = 10;
     }
 
 }
