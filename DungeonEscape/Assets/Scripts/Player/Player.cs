@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private SpriteRenderer _spriteSword;
     private bool _jumping = false;
     public int _diamonds = 0;
+    private bool _isDead = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,25 +43,28 @@ public class Player : MonoBehaviour, IDamageable
 
     void PlayerMovement()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        _grounded = Grounded();
-        FlipPlayer(horizontalInput);
-        Debug.DrawRay(transform.position, Vector2.down * 0.8f, Color.green);
-        if (Input.GetKeyDown(KeyCode.Space) && Grounded())
+        if (!_isDead)
         {
-            _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
-            StartCoroutine(ResetJumpRoutine());
-            _jumping = true;
-            _playerAnimation.JumpPlayer(_jumping);
-        }
+            float horizontalInput = CrossPlatformInputManager.GetAxis("Horizontal");
+            _grounded = Grounded();
+            FlipPlayer(horizontalInput);
+            Debug.DrawRay(transform.position, Vector2.down * 0.8f, Color.green);
+            if (CrossPlatformInputManager.GetButtonDown("B_btn") && Grounded())
+            {
+                _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
+                StartCoroutine(ResetJumpRoutine());
+                _jumping = true;
+                _playerAnimation.JumpPlayer(_jumping);
+            }
 
-        _rb.velocity = new Vector2(horizontalInput * _speed, _rb.velocity.y);
-        _playerAnimation.MovePlayer(horizontalInput);
+            _rb.velocity = new Vector2(horizontalInput * _speed, _rb.velocity.y);
+            _playerAnimation.MovePlayer(horizontalInput);
+        }
     }
 
     void Attack()
     {
-        if(Input.GetMouseButtonDown(0) && Grounded())
+        if(CrossPlatformInputManager.GetButtonDown("A_btn") && Grounded())
         {
             _playerAnimation.Attack();
         }
@@ -111,11 +116,26 @@ public class Player : MonoBehaviour, IDamageable
     {
         Health--;
         Debug.Log("Player health is: " + Health);
+        //update Ui display
+        UIManager.Instance.UpdateLives(Health);
+        if (Health == 0)
+        {
+            _isDead = true;
+            _anim.SetTrigger("death");
+            Destroy(this.gameObject, 2);
+        }
     }
 
     public void UpdateDiamonds(int amount)
     {
-        _diamonds = _diamonds + amount;
+        _diamonds += amount;
+        Debug.Log("Gem count is: " + _diamonds);
+        UIManager.Instance.UpdateGemCountOnHud(_diamonds);
+    }
+
+    public void MinusDiamonds(int amount)
+    {
+        _diamonds -= amount;
     }
 
 }

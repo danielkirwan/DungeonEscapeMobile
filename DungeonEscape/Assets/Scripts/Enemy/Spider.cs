@@ -30,7 +30,7 @@ public class Spider : Enemy, IDamageable
         base.Init();
         Debug.Log("spider gem value = " + gems);
         Health = health;
-        gems = 5;
+        gems = 50;
     }
 
     public override void Movement()

@@ -17,6 +17,6 @@ public class Skeleton : Enemy, IDamageable
         base.Init();
         Debug.Log("skeleton gem value = " + gems);
         Health = health;
-        gems = 100;
+        gems = 200;
     }
 }
