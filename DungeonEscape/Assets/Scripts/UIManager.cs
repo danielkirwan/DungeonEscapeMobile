@@ -46,6 +46,7 @@ public class UIManager : MonoBehaviour
     public void UpdateGemCountOnHud(int amount)
     {
         _gemCountTextHUD.text = amount.ToString();
+        Debug.Log("Shop gem count updat4ed");
     }
 
     public void TurnOffSelection()

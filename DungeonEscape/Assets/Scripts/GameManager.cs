@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public bool _hasCastleKey { get; set; }
+    public Player player { get; private set; }
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -21,8 +22,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
- 
+      
 
 }
